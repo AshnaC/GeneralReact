@@ -9,7 +9,7 @@ import React from 'react';
 import debounce from 'lodash/debounce';
 
 import FundDetails from '../FundDetails';
-
+import FundList from '../FundList';
 
 class FundExplorer extends React.Component {
   constructor(props) {
@@ -17,16 +17,22 @@ class FundExplorer extends React.Component {
     this.state = { compareList: [] };
     this.addToCompare = this.addToCompare.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.showAllResults = this.showAllResults.bind(this);
+    // this.showAllResults = this.showAllResults.bind(this);
     this.searchFunds = debounce(this.onSearchInputChange, 1000);
+    //this.getFundDetails = this.props.getFundDetails.bind(this);
   }
 
   onSearchInputChange(value) {
     this.props.getFundList({ search: value });
-    this.setState({ value });
+    this.setState({ value, showResult: false });
   }
 
-  getFundDetails = detailsId => () => {
+  // getFundDetails(detailsId) {
+  //   this.setState({ selectedFundId: detailsId });
+  //   this.props.getFundDetails(detailsId);
+  // }
+
+  getFundDetails = (detailsId) => () => {
     this.setState({ selectedFundId: detailsId });
     if (!this.props.fundDetailsList[detailsId]) {
       this.props.getFundDetails(detailsId);
@@ -40,58 +46,57 @@ class FundExplorer extends React.Component {
     }
   }
 
-  showAllResults() {
-    this.setState({ showAllResults: true });
+  showResults = (detailsId) => () => {
+    const displayList = this.props.fundList && (detailsId ?
+      this.props.fundList.search_results.filter(fund=> fund.details_id === detailsId) :
+      this.props.fundList.search_results);
+    this.setState({ showResult: true, displayList });
   }
 
-  addToCompare(detailsId) {
-    debugger
+  // showAllResults() {
+  //   const displayList = this.props.fundList && this.props.fundList.search_results;
+  //   this.setState({ showResult: true, displayList });
+  // }
+
+  addToCompare(fund) {
     this.setState((prevState) => {
       const compareList = prevState.compareList;
-      if (!compareList.includes(detailsId)) {
-        compareList.push(detailsId);
+      if (!compareList.find((item) => item.details_id === fund.details_id)) {
+        compareList.push(fund);
       }
-    }
-    );
+    });
   }
 
   render() {
     console.log('props', this.props);
     console.log('state', this.state);
-    const fundList = (this.props.fundList && this.props.fundList.search_results) || [];
+    const funds = (this.props.fundList && this.props.fundList.search_results) || [];
+    //const list = 
     return (
-      // <div>123</div>
       <div>
-        <input onKeyUp={this.handleSearch}>
-        </input>
-        <div onClick={this.showAllResults}>Search</div>
-        {fundList.length === 0 && this.props.fundList ?
+        <input onKeyUp={this.handleSearch} />
+        <div onClick={this.showResults()}>Search</div>
+        {funds.length === 0 && this.props.fundList ?
           <div>No matching results</div> :
           <div>
-            {fundList.slice(0, 9).map(fund => {
+            {funds.slice(0, 9).map(fund => {
               return (
-                <div key={fund.details_id} onClick={this.getFundDetails(fund.details_id)}>
+                <div key={fund.details_id} onClick={this.showResults(fund.details_id, true)}>
                   {fund.name}
                 </div>);
             })}
-            {fundList.length > 10 && <div onClick={this.showAllResults}>Show More</div>}
+            {funds.length > 10 && <div onClick={this.showResults()}>Show More</div>}
           </div>
         }
-        {this.state.showAllResults && this.props.fundList.search_query === this.state.value &&
-          fundList.map(fund => {
-            return (
-              <div>
-                <div key={fund.details_id} onClick={this.getFundDetails(fund.details_id)}>
-                  {fund.name}
-                </div>
-                <span onClick={this.addToCompare.bind(this, fund.details_id)} > Add to Compare</span>
-              </div>
-            );
-          })
+        {this.state.showResult &&
+        <FundList
+          fundList={this.state.displayList}
+          selectedFundId={this.state.selectedFundId}
+          addToCompare={this.addToCompare}
+          getFundDetails={this.getFundDetails}
+          fundDetailsList={this.props.fundDetailsList}
+        />
         }
-
-        {this.props.fundDetailsList[this.state.selectedFundId] &&
-          <FundDetails data={this.props.fundDetailsList[this.state.selectedFundId]} />}
       </div>
     );
   }
