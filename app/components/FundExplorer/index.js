@@ -10,6 +10,13 @@ import debounce from 'lodash/debounce';
 
 import FundDetails from '../FundDetails';
 import FundList from '../FundList';
+import Button from '../Button';
+
+import {
+  CompareListWrapper,
+  CompareItem,
+  Input,
+} from './styles';
 
 class FundExplorer extends React.Component {
   constructor(props) {
@@ -71,11 +78,10 @@ class FundExplorer extends React.Component {
     console.log('props', this.props);
     console.log('state', this.state);
     const funds = (this.props.fundList && this.props.fundList.search_results) || [];
-    //const list = 
     return (
       <div>
-        <input onKeyUp={this.handleSearch} />
-        <div onClick={this.showResults()}>Search</div>
+        <Input large onKeyUp={this.handleSearch} />
+        <Button onClick={this.showResults()} label={'Search'} />
         {funds.length === 0 && this.props.fundList ?
           <div>No matching results</div> :
           <div>
@@ -88,6 +94,17 @@ class FundExplorer extends React.Component {
             {funds.length > 10 && <div onClick={this.showResults()}>Show More</div>}
           </div>
         }
+        {this.state.compareList.length > 0 &&
+        <CompareListWrapper>
+          {this.state.compareList.map(fundToCompare => {
+          return (<CompareItem key={fundToCompare.details_id}>{fundToCompare.name}</CompareItem>);
+        })}
+          <Button
+            label="Compare"
+            disabled={this.state.compareList.length < 2}
+          />
+        </CompareListWrapper>}
+
         {this.state.showResult &&
         <FundList
           fundList={this.state.displayList}

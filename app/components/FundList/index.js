@@ -9,8 +9,6 @@ import React from 'react';
 
 import FundDetails from '../FundDetails';
 
-
-
 class FundList extends React.PureComponent {
 
   getFundDetails = (detailsId) => () => {
