@@ -41,7 +41,7 @@ class FundExplorer extends React.Component {
           this.props.fundList && this.props.fundList.search_results.map( fund => {
             return (
               <div key={fund.details_id} onClick={this.getFundDetails(fund.details_id)}>
-                {fund.name}
+                {fund.name} 123
                 <FundDetails data={this.props.fundDetailsList[fund.details_id]} />
               </div>);
           })
