@@ -21,13 +21,14 @@ import FundExplorer from '../../components//FundExplorer';
 
 export class FundContainer extends React.Component {
   render() {
-  console.log('main', this.props);
+    console.log('main', this.props);
     return (
       <FundExplorer
         fundList={this.props.fundList}
         getFundList={this.props.getFundList}
         getFundDetails={this.props.getFundDetails}
-        fundDetailsList={this.props.fundDetailsList || {}}        
+        fecthingDetails={this.props.fecthingDetails}
+        fundDetailsList={this.props.fundDetailsList || {}}
       />
     );
   }

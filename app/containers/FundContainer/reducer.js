@@ -6,6 +6,7 @@
 
 import { fromJS } from 'immutable';
 import {
+  GET_FUND_DETAILS,
   FUND_LIST_FETCHED,
   FUND_DETAILS_FETCHED,
 } from './constants';
@@ -22,8 +23,10 @@ function fundContainerReducer(state = initialState, action) {
       const { details, detailsId } = action;
       let fundDetailsList = state.get('fundDetailsList');
       fundDetailsList = { ...fundDetailsList, [detailsId]: details };
-      return state.set('fundDetailsList', fundDetailsList);
+      return state.set('fundDetailsList', fundDetailsList).set('fecthingDetails', false);
     }
+    case GET_FUND_DETAILS:
+      return state.set('fecthingDetails', true);
     default:
       return state;
   }

@@ -12,6 +12,7 @@ class FundDetails extends React.PureComponent { // eslint-disable-line react/pre
   render() {
     return (
       <div>
+        Show me the details
       </div>
     );
   }

@@ -29,11 +29,12 @@ function* onFetchFundList(action) {
 
 function* onFetchFundDetails(action) {
   debugger;
+  // yield files.map(file => call(uploadImageApi , file));
   const requestURL = `https://api.piggy.co.in/v1/mf/?key=${action.key}`;
   try {
     const data = yield call(request, requestURL, {
       method: 'GET',
-     // body: JSON.stringify(action.param),
+      // body: JSON.stringify(action.param),
       headers: {
         "authorization": "Token a41d2b39e3b47412504509bb5a1b66498fb1f43a",
         //"cache-control": "no-cache",
