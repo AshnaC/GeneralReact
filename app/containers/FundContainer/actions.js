@@ -9,6 +9,7 @@ import {
   FUND_LIST_FETCHED,
   GET_FUND_DETAILS,
   FUND_DETAILS_FETCHED,
+  GET_FUND_DETAILS_LIST,
 } from './constants';
 
 export function getFundList(param) {
@@ -32,11 +33,16 @@ export function fundListFetched(fundList) {
   };
 }
 
-export function fundDetailsFetched(details, detailsId) {
+export function fundDetailsFetched(details) {
   return {
     type: FUND_DETAILS_FETCHED,
     details,
-    detailsId,
   };
 }
 
+export function getFundDetailsList(detailsIds) {
+  return {
+    type: GET_FUND_DETAILS_LIST,
+    detailsIds,
+  };
+}

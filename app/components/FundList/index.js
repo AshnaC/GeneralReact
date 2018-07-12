@@ -5,13 +5,19 @@
 */
 
 import React from 'react';
-// import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import FundDetails from '../FundDetails';
+
+import {
+  ListWrapper,
+  ListItem,
+} from './styles';
 
 class FundList extends React.PureComponent {
 
   getFundDetails = (detailsId) => () => {
+    debugger
     this.props.getFundDetails(detailsId);
   };
 
@@ -21,28 +27,32 @@ class FundList extends React.PureComponent {
 
   render() {
     return (
-      <div>
-        {this.props.fundList.map(fund => {
-            return (
-              <div key={fund.details_id}>
-                <div  onClick={this.getFundDetails(fund.details_id)}>
-                  {fund.name}
-                </div>
-                <span onClick={this.addToCompare(fund)} > Add to Compare</span>
-                {this.props.selectedFundId === fund.details_id && this.props.fundDetailsList[fund.details_id] &&
+      <ListWrapper>
+        {this.props.fundList.map((fund) => {
+          return (
+            <ListItem key={fund.details_id}>
+              <div onClick={this.getFundDetails(fund.details_id)} role="link">
+                {fund.name}
+              </div>
+              <span onClick={this.addToCompare(fund)} > Add to Compare</span>
+              {this.props.selectedFundId === fund.details_id && this.props.fundDetailsList[fund.details_id] &&
                 <FundDetails
                   data={fund}
                 />}
-              </div>
-            );
-          })}
-      </div>
+            </ListItem>
+          );
+        })}
+      </ListWrapper>
     );
   }
 }
 
 FundList.propTypes = {
-
+  getFundDetails: PropTypes.func,
+  addToCompare: PropTypes.func,
+  fundList: PropTypes.array,
+  selectedFundId: PropTypes.string,
+  fundDetailsList: PropTypes.object,
 };
 
 export default FundList;

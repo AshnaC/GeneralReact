@@ -1,18 +1,21 @@
 import styled from 'styled-components';
-import myImage from '../../images/background.jpg';
 
-export const CompareListWrapper = styled.div`
-  display: inline-block;
-  width: 300px;
-  padding:10px;
+export const ListWrapper = styled.div`
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   border: 2px solid #c8c8c8;
+  padding:10px;
+  // border-radius: 6px;
+  vertical-align: top;
+  width: calc(100% - 300px);
+  display: inline-block;
 `;
 
-export const CompareItem = styled.div`
+export const ListItem = styled.div`
   padding: 5px;
-  margin: 5px;
   border: 1px solid #c8c8c8;
+  font-size: 14px;
+  color: ##666;
+  font-weight: bold;
 `;
 
 export const Input = styled.input`

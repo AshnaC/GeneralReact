@@ -15,7 +15,7 @@ import injectReducer from 'utils/injectReducer';
 import makeSelectFundContainer from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { getFundList, getFundDetails } from './actions';
+import { getFundList, getFundDetails, getFundDetailsList } from './actions';
 
 import FundExplorer from '../../components//FundExplorer';
 
@@ -28,6 +28,8 @@ export class FundContainer extends React.Component {
         getFundList={this.props.getFundList}
         getFundDetails={this.props.getFundDetails}
         fecthingDetails={this.props.fecthingDetails}
+        fundListFetched={this.props.fundListFetched}
+        getFundDetailsList={this.props.getFundDetailsList}
         fundDetailsList={this.props.fundDetailsList || {}}
       />
     );
@@ -37,6 +39,8 @@ export class FundContainer extends React.Component {
 FundContainer.propTypes = {
   getFundList: PropTypes.func.isRequired,
   fundList: PropTypes.object,
+  fundListFetched: PropTypes.bool,
+  getFundDetailsList: PropTypes.func,
 };
 
 // const mapStateToProps = createStructuredSelector({
@@ -47,8 +51,9 @@ const mapStateToProps = makeSelectFundContainer();
 
 function mapDispatchToProps(dispatch) {
   return {
-    getFundList: param => dispatch(getFundList(param)),
-    getFundDetails: detailsId => dispatch(getFundDetails(detailsId)),
+    getFundList: (param) => dispatch(getFundList(param)),
+    getFundDetails: (detailsId) => dispatch(getFundDetails(detailsId)),
+    getFundDetailsList: (detailsIds) => dispatch(getFundDetailsList(detailsIds)),
   };
 }
 
