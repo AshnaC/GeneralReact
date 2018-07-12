@@ -9,7 +9,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 
-import FundDetails from '../FundDetails';
+import FundCompare from '../FundCompare';
 import FundList from '../FundList';
 import Button from '../Button';
 
@@ -17,6 +17,8 @@ import {
   SearchResultDropDown,
   CompareListWrapper,
   SearchInputWrapper,
+  ContentContainer,
+  ContentWrapper,
   SearchItem,
   CompareItem,
   BackDrop,
@@ -33,7 +35,7 @@ class FundExplorer extends React.Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.disableSearchDropDown = this.disableSearchDropDown.bind(this);
     this.searchFunds = debounce(this.onSearchInputChange, 1000);
-    this.onFundsCompre = this.onFundsCompre.bind(this);
+    this.onFundsCompare = this.onFundsCompare.bind(this);
     this.getFundDetails = this.getFundDetails.bind(this);
   }
 
@@ -41,6 +43,9 @@ class FundExplorer extends React.Component {
     if (!prevProps.fundListFetched && this.props.fundListFetched) {
       this.setState({ showSearchDropDown: true });
     }
+    if (!prevProps.loadCompare && this.props.loadCompare) {
+      this.setState({ loadComparePage: true });
+    }   
   }
 
   onSearchInputChange(value) {
@@ -49,7 +54,7 @@ class FundExplorer extends React.Component {
     this.setState({ value });
   }
 
-  onFundsCompre() {
+  onFundsCompare() {
     const fundsToFetch = [];
     const fundsToCompare = this.state.compareList;
     fundsToCompare.map((fund) => {
@@ -60,19 +65,17 @@ class FundExplorer extends React.Component {
     if (fundsToFetch.length > 0) {
       this.props.getFundDetailsList(fundsToFetch);
     }
+    else {
+      this.setState({ loadComparePage: true });
+    }
   }
 
   getFundDetails(detailsId) {
-    debugger;
     this.setState({ selectedFundId: detailsId });
     if (!this.props.fundDetailsList[detailsId]) {
       this.props.getFundDetails(detailsId);
     }
   }
-
-  // getFundDetails = (detailsId) => () => {
-
-  // };
 
   disableSearchDropDown() {
     this.setState({ showSearchDropDown: false });
@@ -116,10 +119,26 @@ class FundExplorer extends React.Component {
     console.log('state', this.state);
     const funds = (this.props.fundList && this.props.fundList.search_results);
     return (
-      <div>
+      <ContentContainer>
+        {this.state.compareList.length === 0 ? 
+        <CompareListWrapper>Add Fundsto Compare</CompareListWrapper>:
+          <CompareListWrapper>
+            {this.state.compareList.map((fundToCompare) => {
+              return (<CompareItem key={fundToCompare.details_id}>{fundToCompare.name}</CompareItem>);
+            })}
+            <Button
+              label="Compare"
+              onClick={this.onFundsCompare}
+              disabled={this.state.compareList.length < 2}
+            />
+          </CompareListWrapper>}
+          <ContentWrapper>
         <SearchInputWrapper>
           <Input large onKeyUp={this.handleSearch} />
-          <Button onClick={this.showResults()} label={'Search'} />
+          <Button
+            onClick={this.showResults()}
+            leftMargin="20px"
+            label={'Search'} />
           {funds && this.state.showSearchDropDown &&
             <SearchResultDropDown>
               <BackDrop onClick={this.disableSearchDropDown} />
@@ -136,18 +155,6 @@ class FundExplorer extends React.Component {
                 </div>}
             </SearchResultDropDown>}
         </SearchInputWrapper>
-        {this.state.compareList.length > 0 &&
-          <CompareListWrapper>
-            {this.state.compareList.map((fundToCompare) => {
-              return (<CompareItem key={fundToCompare.details_id}>{fundToCompare.name}</CompareItem>);
-            })}
-            <Button
-              label="Compare"
-              onClick={this.onFundsCompre}
-              disabled={this.state.compareList.length < 2}
-            />
-          </CompareListWrapper>}
-
         {this.state.showResult && this.state.displayList &&
           <FundList
             fundList={this.state.displayList}
@@ -157,7 +164,12 @@ class FundExplorer extends React.Component {
             fundDetailsList={this.props.fundDetailsList}
           />
         }
-      </div>
+        {this.state.loadComparePage &&
+          <FundCompare
+            compareList={this.state.compareList}
+            fundDetailsList={this.props.fundDetailsList} />}
+            </ContentWrapper>
+      </ContentContainer>
     );
   }
 }

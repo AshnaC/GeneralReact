@@ -4,10 +4,6 @@ export const ListWrapper = styled.div`
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   border: 2px solid #c8c8c8;
   padding:10px;
-  // border-radius: 6px;
-  vertical-align: top;
-  width: calc(100% - 300px);
-  display: inline-block;
 `;
 
 export const ListItem = styled.div`

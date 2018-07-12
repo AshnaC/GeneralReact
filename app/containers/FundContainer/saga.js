@@ -61,7 +61,7 @@ function* onFetchFundDetailsList(action) {
       });
     });
     const data = formatDetailsList(detailsList);
-    yield put(fundDetailsFetched(data));
+    yield put(fundDetailsFetched(data, true));
   } catch (err) {
     // yield put(loadingFailed(err));
   }

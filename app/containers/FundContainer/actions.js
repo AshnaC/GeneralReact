@@ -33,10 +33,11 @@ export function fundListFetched(fundList) {
   };
 }
 
-export function fundDetailsFetched(details) {
+export function fundDetailsFetched(details, loadCompare) {
   return {
     type: FUND_DETAILS_FETCHED,
     details,
+    loadCompare,
   };
 }
 

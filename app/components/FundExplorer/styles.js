@@ -7,6 +7,7 @@ export const CompareListWrapper = styled.div`
   padding:10px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   border: 2px solid #c8c8c8;
+  min-height: calc(100vh - 20px);
 `;
 
 export const CompareItem = styled.div`
@@ -29,11 +30,9 @@ export const Input = styled.input`
 
 export const SearchInputWrapper = styled.div`
   position: relative;
-`;
-
-export const ContentWrapper = styled.div`
-  width: 800px;
+  width: 470px;
   margin: auto;
+  text-align: center;
 `;
 
 export const NoData = styled.div`
@@ -80,4 +79,14 @@ export const BackDrop = styled.div`
   left : 0;
   top : 0;
   z-index: -1;
+`;
+
+export const ContentContainer = styled.div`
+  padding:10px;
+`;
+
+export const ContentWrapper = styled.div`
+  width: calc(100% - 300px);
+  vertical-align: top;
+  display: inline-block;
 `;

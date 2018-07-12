@@ -28,11 +28,14 @@ function fundContainerReducer(state = initialState, action) {
       const { details } = action;
       let fundDetailsList = state.get('fundDetailsList');
       fundDetailsList = { ...fundDetailsList, ...details };
-      return state.set('fundDetailsList', fundDetailsList).set('fecthingDetails', false);
+      return state.set('fundDetailsList', fundDetailsList)
+      .set('fecthingDetails', false)
+      .set('loadCompare', action.loadCompare);
     }
     case GET_FUND_DETAILS:
-    case GET_FUND_DETAILS_LIST:
       return state.set('fecthingDetails', true);
+    case GET_FUND_DETAILS_LIST:
+      return state.set('fecthingDetails', true).set('loadCompare', false);
     default:
       return state;
   }

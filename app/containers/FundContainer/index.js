@@ -25,6 +25,7 @@ export class FundContainer extends React.Component {
     return (
       <FundExplorer
         fundList={this.props.fundList}
+        loadCompare={this.props.loadCompare}
         getFundList={this.props.getFundList}
         getFundDetails={this.props.getFundDetails}
         fecthingDetails={this.props.fecthingDetails}
