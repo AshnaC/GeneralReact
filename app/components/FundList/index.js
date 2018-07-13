@@ -6,18 +6,23 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import StarRatingComponent from 'react-star-rating-component';
 
 import FundDetails from '../FundDetails';
+import myImage from '../../images/addToCompare.jpg';
 
 import {
+  AddToCompareIcon,
+  RatingContainer,
   ListWrapper,
   ListItem,
+  FundInfo,
+  FundName,
 } from './styles';
 
 class FundList extends React.PureComponent {
 
   getFundDetails = (detailsId) => () => {
-    debugger
     this.props.getFundDetails(detailsId);
   };
 
@@ -31,13 +36,25 @@ class FundList extends React.PureComponent {
         {this.props.fundList.map((fund) => {
           return (
             <ListItem key={fund.details_id}>
-              <div onClick={this.getFundDetails(fund.details_id)} role="link">
-                {fund.name}
-              </div>
-              <span onClick={this.addToCompare(fund)} > Add to Compare</span>
+              <FundInfo>
+                <FundName onClick={this.getFundDetails(fund.details_id)}>
+                  {fund.name}
+                </FundName>
+                <RatingContainer>
+                  <StarRatingComponent
+                    editing={false}
+                    starCount={5}
+                    value={fund.rating}
+                  />
+                </RatingContainer>
+                <AddToCompareIcon
+                  src={myImage}
+                  onClick={this.addToCompare(fund)} />
+              </FundInfo>
               {this.props.selectedFundId === fund.details_id && this.props.fundDetailsList[fund.details_id] &&
                 <FundDetails
-                  data={fund}
+                  details={this.props.fundDetailsList[fund.details_id]}
+                  fund={fund}
                 />}
             </ListItem>
           );

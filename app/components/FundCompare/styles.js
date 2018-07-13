@@ -17,7 +17,7 @@ export const StyledTable = styled.table`
   font-size: 13px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   border: 1px solid #eff2f4;
-  
+  width: 100%;
 `;
 
 export const TableBody = styled.tbody`
@@ -32,7 +32,7 @@ export const TableRow = styled.tr`
 `;
 
 export const TableCol = styled.td`
-  padding: 2px;
+  padding: 10px 5px;
 `;
 
 export const TableHeader = styled.tr`
